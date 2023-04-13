@@ -15,8 +15,8 @@ const (
 	ackMessage    = "43"
 
 	CloseMessage = "1"
-	PingMessage = "2"
-	PongMessage = "3"
+	PingMessage  = "2"
+	PongMessage  = "3"
 )
 
 var (
@@ -113,7 +113,8 @@ func getMessageType(data string) (int, error) {
 	return 0, ErrorWrongMessageType
 }
 
-/**
+/*
+*
 Get ack id of current packet, if present
 */
 func getAck(text string) (ackId int, restText string, err error) {
@@ -135,10 +136,14 @@ func getAck(text string) (ackId int, restText string, err error) {
 	return ack, text[pos:], nil
 }
 
-/**
+/*
+*
 Get message method of current packet, if present
 */
 func getMethod(text string) (method, restText string, err error) {
+	if text[len(text)-1:] == "\n" || text[len(text)-1:] == "\r" {
+		text = text[:len(text)-1]
+	}
 	var start, end, rest, countQuote int
 
 	for i, c := range text {
