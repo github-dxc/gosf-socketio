@@ -31,52 +31,44 @@ func sendJoin(c *gosocketio.Client) {
 
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	for i := 0; i < 100; i++ {
 
-		go func() {
-			c, err := gosocketio.Dial(
-				gosocketio.GetUrl("localhost", 3811, false),
-				transport.GetDefaultWebsocketTransport())
-			if err != nil {
-				log.Fatal(err)
-			}
+	go func() {
+		c, err := gosocketio.Dial(
+			gosocketio.GetUrl("localhost", 3811, false),
+			transport.GetDefaultWebsocketTransport())
+		if err != nil {
+			log.Fatal(err)
+		}
 
-			err = c.On("/message", func(h *gosocketio.Channel, args Message) {
-				log.Println("--- Got chat message: ", args)
-			})
-			if err != nil {
-				log.Fatal(err)
-			}
+		err = c.On("/message", func(h *gosocketio.Channel, args Message) {
+			log.Println("--- Got chat message: ", args)
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
 
-			err = c.On(gosocketio.OnDisconnection, func(h *gosocketio.Channel) {
-				log.Fatal("Disconnected")
-			})
-			if err != nil {
-				log.Fatal(err)
-			}
+		err = c.On(gosocketio.OnDisconnection, func(h *gosocketio.Channel) {
+			log.Fatal("Disconnected")
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
 
-			err = c.On(gosocketio.OnConnection, func(h *gosocketio.Channel) {
-				log.Println("Connected")
-			})
-			if err != nil {
-				log.Fatal(err)
-			}
+		err = c.On(gosocketio.OnConnection, func(h *gosocketio.Channel) {
+			log.Println("Connected")
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
 
-			time.Sleep(1 * time.Second)
+		time.Sleep(1 * time.Second)
 
-			for i := 0; i < 100; i++ {
-				go sendJoin(c)
-				go sendJoin(c)
-				go sendJoin(c)
-				go sendJoin(c)
-				go sendJoin(c)
-			}
+		go sendJoin(c)
 
-			time.Sleep(10 * time.Second)
-			c.Close()
+		time.Sleep(10 * time.Second)
+		c.Close()
 
-		}()
-	}
+	}()
 	time.Sleep(6000 * time.Second)
 	log.Println(" [x] Complete")
 }

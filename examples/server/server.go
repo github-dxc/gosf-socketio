@@ -37,7 +37,8 @@ func main() {
 	server.On("/join", func(c *gosocketio.Channel, channel Channel) string {
 		time.Sleep(2 * time.Second)
 		log.Println("Client joined to ", channel.Channel)
-		return "joined to " + channel.Channel
+		return "{\"a\":1}"
+		//return "joined to " + channel.Channel
 	})
 
 	serveMux := http.NewServeMux()

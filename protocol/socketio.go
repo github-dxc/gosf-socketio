@@ -118,6 +118,7 @@ func getMessageType(data string) (int, error) {
 Get ack id of current packet, if present
 */
 func getAck(text string) (ackId int, restText string, err error) {
+	//dxc
 	if text[len(text)-1:] == "\n" || text[len(text)-1:] == "\r" {
 		text = text[:len(text)-1]
 	}
@@ -201,7 +202,7 @@ func Decode(data string) (*Message, error) {
 		if err != nil {
 			return nil, err
 		}
-		msg.Args = rest[2 : len(rest)-2]
+		msg.Args = rest[1 : len(rest)-1]
 		return msg, nil
 	}
 

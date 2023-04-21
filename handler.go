@@ -139,6 +139,10 @@ func (m *methods) processIncomingMessage(c *Channel, msg *protocol.Message) {
 	case protocol.MessageTypeAckResponse:
 		waiter, err := c.ack.getWaiter(msg.AckId)
 		if err == nil {
+			//dxc
+			var data string
+			_ = json.Unmarshal([]byte(msg.Args), &data)
+			msg.Args = data
 			waiter <- msg.Args
 		}
 	}
