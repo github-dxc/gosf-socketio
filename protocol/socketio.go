@@ -118,6 +118,9 @@ func getMessageType(data string) (int, error) {
 Get ack id of current packet, if present
 */
 func getAck(text string) (ackId int, restText string, err error) {
+	if text[len(text)-1:] == "\n" || text[len(text)-1:] == "\r" {
+		text = text[:len(text)-1]
+	}
 	if len(text) < 4 {
 		return 0, "", ErrorWrongPacket
 	}
@@ -141,9 +144,6 @@ func getAck(text string) (ackId int, restText string, err error) {
 Get message method of current packet, if present
 */
 func getMethod(text string) (method, restText string, err error) {
-	if text[len(text)-1:] == "\n" || text[len(text)-1:] == "\r" {
-		text = text[:len(text)-1]
-	}
 	var start, end, rest, countQuote int
 
 	for i, c := range text {
