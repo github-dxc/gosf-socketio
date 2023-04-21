@@ -201,7 +201,7 @@ func Decode(data string) (*Message, error) {
 		if err != nil {
 			return nil, err
 		}
-		msg.Args = rest[1 : len(rest)-1]
+		msg.Args = rest[2 : len(rest)-2]
 		return msg, nil
 	}
 
