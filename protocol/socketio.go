@@ -118,17 +118,14 @@ func getMessageType(data string) (int, error) {
 Get ack id of current packet, if present
 */
 func getAck(text string) (ackId int, restText string, err error) {
-	//dxc
-	if text[len(text)-1:] == "\n" || text[len(text)-1:] == "\r" {
-		text = text[:len(text)-1]
-	}
 	if len(text) < 4 {
 		return 0, "", ErrorWrongPacket
 	}
 	text = text[2:]
 
 	pos := strings.IndexByte(text, '[')
-	if pos == -1 {
+	lastPos := strings.IndexByte(text, ']')
+	if pos == -1 || lastPos == -1 {
 		return 0, "", ErrorWrongPacket
 	}
 
@@ -137,7 +134,7 @@ func getAck(text string) (ackId int, restText string, err error) {
 		return 0, "", err
 	}
 
-	return ack, text[pos:], nil
+	return ack, text[pos : lastPos+1], nil
 }
 
 /*
