@@ -131,7 +131,7 @@ func getAck(text string) (ackId int, restText string, err error) {
 
 	ack, err := strconv.Atoi(text[0:pos])
 	if err != nil {
-		return 0, "", err
+		return 0, text[pos : lastPos+1], err
 	}
 
 	return ack, text[pos : lastPos+1], nil
@@ -205,7 +205,6 @@ func Decode(data string) (*Message, error) {
 
 	if err != nil {
 		msg.Type = MessageTypeEmit
-		rest = data[2:]
 	}
 
 	msg.Method, msg.Args, err = getMethod(rest)
