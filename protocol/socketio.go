@@ -124,7 +124,7 @@ func getAck(text string) (ackId int, restText string, err error) {
 	text = text[2:]
 
 	pos := strings.IndexByte(text, '[')
-	lastPos := strings.IndexByte(text, ']')
+	lastPos := strings.LastIndexByte(text, ']')
 	if pos == -1 || lastPos == -1 {
 		return 0, "", ErrorWrongPacket
 	}

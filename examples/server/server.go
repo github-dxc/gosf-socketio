@@ -6,7 +6,6 @@ import (
 	"github.com/github-dxc/gosf-socketio/transport"
 	"log"
 	"net/http"
-	"time"
 )
 
 type Channel struct {
@@ -23,11 +22,11 @@ func main() {
 	server := gosocketio.NewServer(transport.GetDefaultWebsocketTransport())
 
 	server.On(gosocketio.OnConnection, func(c *gosocketio.Channel) {
-		go func() {
-			time.Sleep(1 * time.Second)
-			c.Emit("/message", Message{Text: "asdasdasd"})
-			//c.Ack("/message", Message{Text: "asdasdasd"}, 5*time.Second)
-		}()
+		//go func() {
+		//	time.Sleep(1 * time.Second)
+		//	c.Emit("/message", Message{Text: "asdasdasd"})
+		//	//c.Ack("/message", Message{Text: "asdasdasd"}, 5*time.Second)
+		//}()
 		log.Println("Connected")
 		c.Join(c.Id())
 	})
