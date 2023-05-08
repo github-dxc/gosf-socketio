@@ -19,7 +19,7 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	c, err := gosocketio.Dial(
-		gosocketio.GetUrl("localhost", 3811, false),
+		gosocketio.GetNamespaceUrl("localhost", 3811, "hello", false),
 		transport.GetDefaultWebsocketTransport())
 	if err != nil {
 		log.Fatal(err)
@@ -48,7 +48,17 @@ func main() {
 	}
 
 	time.Sleep(1 * time.Second)
-	a := `{"code":200,"msg":"success","data":{"id":11,"created_at":"2023-05-04T12:00:28.48+08:00","updated_at":"2023-05-04T12:00:28.48+08:00","account_id":3,"conversation_id":"0:1:5774988301:17972723560","conversation_short_id":7226277271248584971,"ticket":"UtcSKZa36lKiYUFN36XYatlZvhAMBqjaSe4DNWbftExKPqx3a0yxzAnzcDUpKKJtc3GexfBIuIzhLhc635R4UPwrXOWkwLnLY4FycOb5pNR9X4BVX0mj8HYhtEKdEMoefiWRUMcfvCJsrNecavf3NHT2naGEMwjaMN9Lv5CHa79Mssc4jb3guR9XiR5S6aMAkQ3KZ6DY8rMs","info_version":1682498800,"read_index":1682498805630707,"owner":5774988301,"friend_uid":17972723560,"friend_avatar_url":"https://sf6-cdn-tos.toutiaostatic.com/img/user-avatar/6c04365a22e14ea973e6bda759d09169~300x300.image","friend_screen_name":"莫天凝","conversation_ext":"[{\"key\":\"s:s_aid\",\"value\":\"13\"}]"}}`
+	a := `{
+  "code": 0,
+  "data": {
+    "nickname": "akaa",
+    "id": 2511730347609102,
+    "sec_uid": "MS4wLjABAAAA-4hQcqDZEsKZuoHg3vmI1s1Us-YMrrAdfMQaC-7VXXM_VbpaNbf-NSQJ-SR_nH7F",
+    "city": "",
+    "avatar_thumb": "https:\/\/p11.douyinpic.com\/aweme\/100x100\/aweme-avatar\/mosaic-legacy_3792_5112637127.jpeg?from=3067671334"
+  },
+  "msg": "获取成功"
+}`
 	ack, err := c.Ack("/message", a, 5*time.Second)
 	log.Println(ack)
 	//err = c.Emit("/message", "hello")

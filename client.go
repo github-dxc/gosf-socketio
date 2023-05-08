@@ -3,6 +3,7 @@ package gosocketio
 import (
 	"net"
 	"strconv"
+	"strings"
 
 	"github.com/github-dxc/gosf-socketio/transport"
 )
@@ -34,6 +35,26 @@ func GetUrl(host string, port int, secure bool) string {
 		prefix = webSocketProtocol
 	}
 	return prefix + net.JoinHostPort(host, strconv.Itoa(port)) + socketioUrl
+}
+
+// GetNamespaceUrl
+//
+//	@Description: 获取带命名空间的url
+//	@param host
+//	@param port
+//	@param namespace 命名空间
+//	@param secure
+//	@return string
+func GetNamespaceUrl(host string, port int, namespace string, secure bool) string {
+	var prefix string
+	if secure {
+		prefix = webSocketSecureProtocol
+	} else {
+		prefix = webSocketProtocol
+	}
+	i := strings.Index(socketioUrl, "?")
+	url := socketioUrl[:i] + namespace + socketioUrl[i:]
+	return prefix + net.JoinHostPort(host, strconv.Itoa(port)) + url
 }
 
 /*

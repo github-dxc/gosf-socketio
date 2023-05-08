@@ -25,7 +25,7 @@ func main() {
 		//go func() {
 		//	time.Sleep(1 * time.Second)
 		//	c.Emit("/message", Message{Text: "asdasdasd"})
-		//	//c.Ack("/message", Message{Text: "asdasdasd"}, 5*time.Second)
+		//c.Ack("/message", Message{Text: "asdasdasd"}, 5*time.Second)
 		//}()
 		log.Println("Connected")
 		c.Join(c.Id())
@@ -41,7 +41,8 @@ func main() {
 	})
 
 	serveMux := http.NewServeMux()
-	serveMux.Handle("/socket.io/", server)
+	namespace := "hello"
+	serveMux.Handle("/socket.io/"+namespace, server)
 
 	log.Println("Starting server...")
 	log.Panic(http.ListenAndServe(":3811", serveMux))
