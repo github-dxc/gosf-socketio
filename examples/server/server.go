@@ -35,14 +35,13 @@ func main() {
 		log.Println("Disconnected")
 	})
 
-	server.On("/message", func(c *gosocketio.Channel, msg string) string {
+	server.On("message", func(c *gosocketio.Channel, msg string) string {
 		fmt.Println("Server Receive:", msg)
 		return msg
 	})
 
 	serveMux := http.NewServeMux()
-	namespace := "hello"
-	serveMux.Handle("/socket.io/"+namespace, server)
+	serveMux.Handle("/socket.io/", server)
 
 	log.Println("Starting server...")
 	log.Panic(http.ListenAndServe(":3811", serveMux))

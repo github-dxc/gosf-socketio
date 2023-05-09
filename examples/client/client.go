@@ -19,16 +19,22 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	c, err := gosocketio.Dial(
-		gosocketio.GetNamespaceUrl("localhost", 3811, "hello", false),
+		gosocketio.GetUrl("localhost", 8828, false),
 		transport.GetDefaultWebsocketTransport())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = c.On("/message", func(h *gosocketio.Channel, args Message) string {
+	err = c.On("message", func(h *gosocketio.Channel, args Message) string {
 		log.Println("Client Receive message: ", args)
 		return "ok"
 	})
+
+	err = c.On("ReceiveMsg", func(h *gosocketio.Channel, args string) string {
+		log.Println("Client ReceiveMsg: ", args)
+		return "ok"
+	})
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,18 +54,8 @@ func main() {
 	}
 
 	time.Sleep(1 * time.Second)
-	a := `{
-  "code": 0,
-  "data": {
-    "nickname": "akaa",
-    "id": 2511730347609102,
-    "sec_uid": "MS4wLjABAAAA-4hQcqDZEsKZuoHg3vmI1s1Us-YMrrAdfMQaC-7VXXM_VbpaNbf-NSQJ-SR_nH7F",
-    "city": "",
-    "avatar_thumb": "https:\/\/p11.douyinpic.com\/aweme\/100x100\/aweme-avatar\/mosaic-legacy_3792_5112637127.jpeg?from=3067671334"
-  },
-  "msg": "获取成功"
-}`
-	ack, err := c.Ack("/message", a, 5*time.Second)
+	a := `{"namespace":"/","event":"ReceiveMsg","data":{"id":2511730347609102,"group_id":1}}`
+	ack, err := c.Ack("SendMsg", a, 5*time.Second)
 	log.Println(ack)
 	//err = c.Emit("/message", "hello")
 	//if err != nil {
