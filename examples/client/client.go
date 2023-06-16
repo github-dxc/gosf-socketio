@@ -54,7 +54,8 @@ func main() {
 	}
 
 	time.Sleep(1 * time.Second)
-	a := `{"namespace":"/","event":"ReceiveMsg","data":{"id":2511730347609102,"group_id":1}}`
+	//a := `{"namespace":"/chatroom","event":"XHS_Get_Group_List","data":{"user_id":"63a570f6000000002702862a"}}`
+	a := `{"namespace":"/chatroom","event":"XHS_Get_Group_User_List","data":{"group_id":"136364356886378111"}}`
 	ack, err := c.Ack("SendMsg", a, 5*time.Second)
 	log.Println(ack)
 	//err = c.Emit("/message", "hello")
